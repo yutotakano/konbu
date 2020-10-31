@@ -1,5 +1,6 @@
 from cv2 import cv2
 import numpy as np
+import urllib
 import os
 import sys
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -15,9 +16,13 @@ def main():
     
     file = sys.argv[1]
 
-    stream = open(file, 'rb')
-    bytes = bytearray(stream.read())
-    nparray = np.array(bytes, dtype=np.uint8)
+    if 'http' in file:
+        with urllib.request.urlopen(file) as req:
+            nparray = np.asarray(bytearray(req.read()), dtype=np.uint8)
+    else:
+        stream = open(file, 'rb')
+        bytes = bytearray(stream.read())
+        nparray = np.array(bytes, dtype=np.uint8)
     data = cv2.imdecode(nparray, cv2.IMREAD_GRAYSCALE)
     if data is None:
         exit('Image is None.')
