@@ -33,14 +33,16 @@ def main():
 
     model = load_model('model.h5')
 
-    ret, threshed = cv2.threshold(data, 180, 255, cv2.THRESH_BINARY)
+    ret, threshed = cv2.threshold(data, 175, 255, cv2.THRESH_BINARY)
 
-    crop_img = threshed[:, 6:-6]
-    letters_data = [crop_img[:, :17],
-                    crop_img[:, 13:32],
-                    crop_img[:, 28:47],
-                    crop_img[:, 43:]]
-    
+    crop_rows = threshed[~np.all(threshed == 255, axis=1), :]
+    cropped_image = crop_rows[:, ~np.all(crop_rows == 255, axis=0)]
+    padded = np.pad(cropped_image, ((0, 2), (2, 0)), 'constant')
+
+    letters_data = [padded[:, :15 + 2],
+                    padded[:, 15 - 2:30 + 2],
+                    padded[:, 30 - 2:45 + 2],
+                    padded[:, 45 - 2:]]
     
     output = ''
     for letter_data in letters_data:
