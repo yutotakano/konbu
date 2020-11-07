@@ -31,7 +31,7 @@ def main():
     # data = np.reshape(data, (24, 24, 1))
     
 
-    model = load_model('model.h5')
+    model = load_model(os.path.dirname(os.path.abspath(__file__)) + '/model.h5')
 
     ret, threshed = cv2.threshold(data, 175, 255, cv2.THRESH_BINARY)
 
