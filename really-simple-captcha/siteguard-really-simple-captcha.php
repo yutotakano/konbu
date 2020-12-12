@@ -216,7 +216,7 @@ class SiteGuardReallySimpleCaptcha {
 					$actual_name = $prefix;
 					$i = 1;
 					do {
-						$actual_name = $filename . substr('0000' . $i, -5);
+						$actual_name = $filename . substr('0000' . $i, -3);
 						$i++;
 					} while(file_exists($dir . $actual_name . '.jpeg'));
 					$name = $actual_name . '.jpeg';
@@ -228,7 +228,7 @@ class SiteGuardReallySimpleCaptcha {
 					$actual_name = $prefix;
 					$i = 1;
 					do {
-						$actual_name = $filename . substr('0000' . $i, -5);
+						$actual_name = $filename . substr('0000' . $i, -3);
 						$i++;
 					}while(file_exists($dir . $actual_name . '.gif'));
 					$name = $actual_name . '.gif';
@@ -241,7 +241,7 @@ class SiteGuardReallySimpleCaptcha {
 					$actual_name = $prefix;
 					$i = 1;
 					do {
-						$actual_name = $filename . substr('0000' . $i, -5);
+						$actual_name = $filename . substr('0000' . $i, -3);
 						$i++;
 					} while(file_exists($dir . $actual_name . '.png'));
 					$name = $actual_name . '.png';
