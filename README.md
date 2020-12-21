@@ -8,6 +8,39 @@ See the readme inside `/really-simple-captcha` for details of generating the dat
 
 The model was trained on the above dataset using Keras, and the final output is `model.h5`. `predict.py` takes an input image of four characters (as per the captcha), and outputs the result to stdout.
 
-## Demo
+## Neural Network Summary
 
-![Image](https://i.imgur.com/vnladYn.png)
+```
+Layer (type)                 Output Shape              Param #
+=================================================================
+conv2d (Conv2D)              (None, 22, 13, 16)        160
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 11, 6, 16)         0
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 9, 4, 64)          9280
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 4, 2, 64)          0
+_________________________________________________________________
+flatten (Flatten)            (None, 512)               0
+_________________________________________________________________
+dense (Dense)                (None, 500)               256500
+_________________________________________________________________
+dense_1 (Dense)              (None, 36)                18036
+=================================================================
+Total params: 283,976
+Trainable params: 283,976
+Non-trainable params: 0
+_________________________________________________________________
+```
+
+# Accuracy
+
+```
+loss: 0.0069 - accuracy: 0.9979 - val_loss: 0.0593 - val_accuracy: 0.9872
+```
+
+As far as it has been tested with manual input, it has returned the correct result for all inputs.
+
+## Screenshot
+
+![Screenshot](https://i.imgur.com/QV6rD5m.png)

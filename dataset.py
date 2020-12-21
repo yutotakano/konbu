@@ -24,10 +24,12 @@ def generate(chars):
             # If first occurrence, add category.
             i += 1 if '00001' == filename[1:6] else 0
 
-            # Reshape, add channel dimension, and append
-            data = cv2.resize(data, (24, 24), interpolation=cv2.INTER_AREA)
-            data = np.reshape(data, (24, 24, 1))
-            chars_data.append(data)
+            # Apply threshold    
+            ret, threshed = cv2.threshold(data, 180, 255, cv2.THRESH_BINARY)
+
+            # Already 24x15, so just add channel dimension, and append
+            threshed = np.reshape(threshed, (24, 15, 1))
+            chars_data.append(threshed)
             chars_labels.append(i)
     
     # create an array of character data, divide the matrix by 255.0 to make values for each pixel within 0 and 1

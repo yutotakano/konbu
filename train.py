@@ -7,10 +7,10 @@ model = Sequential()
 chars = 'あいうえおかきくけこさしすせそたちつてとなにのひふへまみむもやゆよらりん';
 # add model layers
 
-model.add(Conv2D(20, kernel_size=(3,3), activation='relu', input_shape=(24, 24, 1)))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-model.add(Conv2D(50, kernel_size=(3,3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+model.add(Conv2D(16, kernel_size=(3, 3), activation='relu', input_shape=(24, 15, 1))) 
+model.add(MaxPooling2D(pool_size=(2, 2), strides=None))
+model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=None))
 model.add(Flatten())
 model.add(Dense(500, activation='relu'))
 model.add(Dense(len(chars), activation='softmax'))
@@ -22,5 +22,9 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 # Run
 model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=10, shuffle=True)
+# Epoch 10/10
+# loss: 0.0069 - accuracy: 0.9979 - val_loss: 0.0593 - val_accuracy: 0.9872
 
 model.save('model.h5')
+
+model.summary()
