@@ -209,48 +209,41 @@ class SiteGuardReallySimpleCaptcha {
 				imagettftext( $im, $this->font_size, mt_rand( -12, 12 ), $x, $this->base[1] + mt_rand( -2, 2 ), $fg, $font, $char );
 				$x += $this->font_char_width;
 			}
-
-			switch ( $this->img_type ) {
-				case 'jpeg':
-					$filename = $prefix;
-					$actual_name = $prefix;
-					$i = 1;
-					do {
-						$actual_name = $filename . substr('0000' . $i, -3);
-						$i++;
-					} while(file_exists($dir . $actual_name . '.jpeg'));
-					$name = $actual_name . '.jpeg';
-					$file = $this->normalize_path( $dir . $name );
-					imagejpeg( $im, $file );
-					break;
-				case 'gif':
-					$filename = $prefix;
-					$actual_name = $prefix;
-					$i = 1;
-					do {
-						$actual_name = $filename . substr('0000' . $i, -3);
-						$i++;
-					}while(file_exists($dir . $actual_name . '.gif'));
-					$name = $actual_name . '.gif';
-					$file = $this->normalize_path( $dir . $name );
-					imagegif( $im, $file );
-					break;
-				case 'png':
-				default:
-					$filename = $prefix;
-					$actual_name = $prefix;
-					$i = 1;
-					do {
-						$actual_name = $filename . substr('0000' . $i, -3);
-						$i++;
-					} while(file_exists($dir . $actual_name . '.png'));
-					$name = $actual_name . '.png';
-					$file = $this->normalize_path( $dir . $name );
-					imagepng( $im, $file );
+			
+			// Save each character as its own image
+			foreach (mb_str_split($prefix) as $key => $char) {
+				$cropped_part = imagecrop($im, [
+					"x" => 6 + ($this->img_size[0] - 12) / mb_strlen($prefix) * $key,
+					"y" => 0,
+					"width" => 15,
+					"height" => $this->img_size[1]
+				]);
+				$filename = $char;
+				$actual_name = $char;
+				$i = 1;
+				do {
+					$actual_name = $filename . substr('0000' . $i, -5);
+					$i++;
+				} while (file_exists($dir . $actual_name . '.' . $this->img_type));
+				$name = $actual_name . '.' . $this->img_type;
+				$file = $this->normalize_path($dir . $name);
+				switch ($this->img_type) {
+					case 'jpeg':
+						imagejpeg($cropped_part, $file);
+						break;
+					case 'gif':
+						imagegif($cropped_part, $file);
+						break;
+					case 'png':
+					default:
+						imagepng($cropped_part, $file);
+						break;
+				}
+				imagedestroy( $cropped_part );
+				@chmod( $file, $this->file_mode );
 			}
 
 			imagedestroy( $im );
-			@chmod( $file, $this->file_mode );
 		}
 
 		// $this->generate_answer_file( $prefix, $word );
