@@ -33,7 +33,7 @@ Non-trainable params: 0
 _________________________________________________________________
 ```
 
-# Accuracy
+## Accuracy
 
 ```
 loss: 0.0069 - accuracy: 0.9979 - val_loss: 0.0593 - val_accuracy: 0.9872
